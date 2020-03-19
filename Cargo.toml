@@ -5,3 +5,4 @@ authors = ["Karl Hole Totland <karlhto@ifi.uio.no>"]
 edition = "2018"
 
 [dependencies]
+ggez = "0.5"

@@ -1,0 +1,82 @@
+
+// Instructions are grouped as:
+//      0 - Control instructions
+//      1 - ALU operations
+//      2 - Read/modify/write operations
+//      3 - Unofficial opcodes
+//
+// The second number is occurence
+// TODO: Change second "number" to parameters
+enum Instr {
+    BRK_0_00, ORA_1_00, STP_2_00, SLO_3_00,
+    NOP_0_00, ORA_1_01, ASL_2_00, SLO_3_01,
+    PHP_0_00, ORA_1_02, ASL_2_01, ANC_3_00,
+    NOP_0_01, ORA_1_03, ASL_2_02, SLO_3_02,
+    BPL_0_00, ORA_1_04, STP_2_01, SLO_3_03,
+    NOP_0_02, ORA_1_05, ASL_2_03, SLO_3_04,
+    CLC_0_00, ORA_1_06, NOP_2_00, SLO_3_05,
+    NOP_0_03, ORA_1_07, ASL_2_04, SLO_3_06,
+
+    JSR_0_00, AND_1_00, STP_2_02, RLA_3_00,
+    BIT_0_00, AND_1_01, ROL_2_00, RLA_3_01,
+    PLP_0_00, AND_1_02, ROL_2_01, ANC_3_01,
+    BIT_0_01, AND_1_03, ROL_2_02, RLA_3_03,
+    BMI_0_01, AND_1_04, STP_2_03, RLA_3_04,
+    NOP_0_04, AND_1_05, ROL_2_03, RLA_3_05,
+    SEC_0_01, AND_1_06, NOP_2_01, RLA_3_06,
+    NOP_0_05, AND_1_07, ROL_2_04, RLA_3_07,
+
+    RTI_0_00, EOR_1_00, STP_2_04, SRE_3_00,
+    NOP_0_06, EOR_1_01, LSR_2_00, SRE_3_01,
+    PHA_0_00, EOR_1_02, LSR_2_01, ALR_3_00,
+    JMP_0_00, EOR_1_03, LSR_2_02, SRE_3_02,
+    BVC_0_00, EOR_1_04, STP_2_05, SRE_3_03,
+    NOP_0_07, EOR_1_05, LSR_2_03, SRE_3_04,
+    CLI_0_00, EOR_1_06, NOP_2_02, SRE_3_05,
+    NOP_0_08, EOR_1_07, LSR_2_04, SRE_3_06,
+
+    RTS_0_00, ADC_1_00, STP_2_06, RRA_3_00,
+    NOP_0_09, ADC_1_01, ROR_2_00, RRA_3_01,
+    PLA_0_00, ADC_1_02, ROR_2_01, ARR_3_00,
+    JMP_0_01, ADC_1_03, ROR_2_02, RRA_3_02,
+    BVS_0_00, ADC_1_04, STP_2_07, RRA_3_03,
+    NOP_0_10, ADC_1_05, ROR_2_03, RRA_3_04,
+    SEI_0_00, ADC_1_06, NOP_2_03, RRA_3_05,
+    NOP_0_11, ADC_1_07, ROR_2_04, RRA_3_06,
+
+    NOP_0_12, STA_1_00, NOP_2_04, SAX_3_00,
+    STY_0_00, STA_1_01, STX_2_00, SAX_3_01,
+    DEY_0_00, NOP_1_00, TXA_2_00, XAA_3_00,
+    STY_0_01, STA_1_02, STX_2_01, SAX_3_02,
+    BCC_0_00, STA_1_03, STP_2_08, AHX_3_00,
+    STY_0_02, STA_1_04, STX_2_02, SAX_3_03,
+    TYA_0_00, STA_1_05, TXS_2_00, TAS_3_00,
+    SHY_0_00, STA_1_06, SHX_2_00, AHX_3_01,
+
+    LDY_0_00, LDA_1_00, LDX_2_00, LAX_3_00,
+    LDY_0_01, LDA_1_01, LDX_2_01, LAX_3_01,
+    TAY_0_00, LDA_1_02, TAX_2_00, LAX_3_02,
+    LDY_0_02, LDA_1_03, LDX_2_02, LAX_3_03,
+    BCS_0_00, LDA_1_04, STP_2_09, LAX_3_04,
+    LDY_0_03, LDA_1_05, LDX_2_03, LAX_3_05,
+    CLV_0_00, LDA_1_06, TSX_2_00, LAS_3_00,
+    LDY_0_04, LDA_1_07, LDX_2_04, LAX_3_06,
+
+    CPY_0_00, CMP_1_00, NOP_2_05, DCP_3_00,
+    CPY_0_01, CMP_1_01, DEC_2_00, DCP_3_01,
+    INY_0_00, CMP_1_02, DEX_2_00, AXS_3_00,
+    CPY_0_02, CMP_1_03, DEC_2_01, DCP_3_02,
+    BNE_0_00, CMP_1_04, STP_2_10, DCP_3_03,
+    NOP_0_13, CMP_1_05, DEC_2_02, DCP_3_04,
+    CLD_0_00, CMP_1_06, NOP_2_06, DCP_3_05,
+    NOP_0_14, CMP_1_07, DEC_2_03, DCP_3_06,
+
+    CPX_0_00, SBC_1_00, NOP_2_07, ISC_3_00,
+    CPX_0_01, SBC_1_01, INC_2_00, ISC_3_01,
+    INX_0_00, SBC_1_02, NOP_2_08, SBC_3_00,
+    CPX_0_02, SBC_1_03, INC_2_01, ISC_3_02,
+    BEQ_0_00, SBC_1_04, STP_2_11, ISC_3_03,
+    NOP_0_15, SBC_1_05, INC_2_02, ISC_3_04,
+    SED_0_00, SBC_1_06, NOP_2_09, ISC_3_05,
+    NOP_0_16, SBC_1_07, INC_2_03, ISC_3_06
+}
